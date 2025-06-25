@@ -2,10 +2,10 @@
 {
     public class VehicleToolRequest
     {
-        public string? SerialNumber { get; set; } = string.Empty;
-        public string? YearOfManufacture { get; set; } = string.Empty;
-        public string? ModelYear { get; set; } = string.Empty;
-        public string? VehicleType { get; set; } = string.Empty;
-        public string? AcronymCountryOfManufacture { get; set; } = string.Empty;
+        public string? SerialNumber { get; set; }
+        public string? YearOfManufacture { get; set; }
+        public string? ModelYear { get; set; }
+        public string? VehicleType { get; set; }
+        public string? AcronymCountryOfManufacture { get; set; }
     }
 }

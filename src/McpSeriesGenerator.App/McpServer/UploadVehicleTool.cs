@@ -126,10 +126,6 @@ namespace McpSeriesGenerator.App.McpServer
                 {
                     using (FileStream fileStream = new(tempFile, FileMode.Create, FileAccess.ReadWrite))
                     {
-                        if (fileStream.Length == 0)
-                        {
-                            return false;
-                        }
                         using (StreamWriter writer = new(fileStream, Encoding.UTF8, leaveOpen: true))
                         {
                             writer.Write(fileContent);

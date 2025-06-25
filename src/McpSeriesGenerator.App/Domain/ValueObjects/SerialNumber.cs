@@ -22,10 +22,7 @@ namespace McpSeriesGenerator.App.Domain.ValueObjects
 
         public static SerialNumber Create(string value, char separator = '-')
         {
-            if (string.IsNullOrWhiteSpace(value) || value.Length < 14)
-            {
-                throw new SerialNumberInvalidException("Serial number must be at least 14 characters long.");
-            }
+            ValidateNullOrLength(value);
 
             if (!value.Contains(separator))
             {
@@ -35,12 +32,17 @@ namespace McpSeriesGenerator.App.Domain.ValueObjects
             return serialNumber;
         }
 
-        public void SetValue(string value, char separator = '-')
+        private static void ValidateNullOrLength(string value)
         {
             if (string.IsNullOrWhiteSpace(value) || value.Length < 14)
             {
                 throw new SerialNumberInvalidException("Serial number must be at least 14 characters long.");
             }
+        }
+
+        public void SetValue(string value, char separator = '-')
+        {
+            ValidateNullOrLength(value);
             if (!value.Contains(separator))
             {
                 Value = value;
@@ -51,19 +53,13 @@ namespace McpSeriesGenerator.App.Domain.ValueObjects
 
         public void SetCheckDigit()
         {
-            if (string.IsNullOrWhiteSpace(Value) || Value.Length < 14)
-            {
-                throw new SerialNumberInvalidException("Serial number must be at least 14 characters long.");
-            }
+            ValidateNullOrLength(Value);
             CheckDigit = CalculateCheckDigitForHexadecimal();
         }
 
         public bool ValidateCheckDigit()
         {
-            if (string.IsNullOrWhiteSpace(Value) || Value.Length < 14)
-            {
-                throw new SerialNumberInvalidException("Serial number must contain a check digit.");
-            }
+            ValidateNullOrLength(Value);
             string expectedCheckDigit = CalculateCheckDigitForHexadecimal();
             return expectedCheckDigit.Trim().ToUpper().Equals(CheckDigit.Trim().ToUpper());
         }

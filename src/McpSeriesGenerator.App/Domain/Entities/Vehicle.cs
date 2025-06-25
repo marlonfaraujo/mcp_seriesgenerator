@@ -28,11 +28,7 @@ namespace McpSeriesGenerator.App.Domain.Entities
 
         public void SetYearOfManufacture()
         {
-            if (VehicleSerialNumber == null ||
-                string.IsNullOrWhiteSpace(VehicleSerialNumber.GetValueWithoutCheckDigit()))
-            {
-                throw new VehicleInvalidException("Vehicle serial number is invalid or empty.");
-            }
+            ValidateSerialNumberNullOrEmpty();
             if (int.TryParse(VehicleSerialNumber.GetValueWithoutCheckDigit().Substring(0, 2), out int year) == false)
             {
                 throw new VehicleInvalidException("Year of manufacture is invalid in the vehicle serial number.");
@@ -40,13 +36,18 @@ namespace McpSeriesGenerator.App.Domain.Entities
             YearOfManufacture = year;
         }
 
-        public void SetModelYear()
+        private void ValidateSerialNumberNullOrEmpty()
         {
             if (VehicleSerialNumber == null ||
                 string.IsNullOrWhiteSpace(VehicleSerialNumber.GetValueWithoutCheckDigit()))
             {
                 throw new VehicleInvalidException("Vehicle serial number is invalid or empty.");
             }
+        }
+
+        public void SetModelYear()
+        {
+            ValidateSerialNumberNullOrEmpty();
             if (int.TryParse(VehicleSerialNumber.GetValueWithoutCheckDigit().Substring(2, 2), out int modelYear) == false)
             {
                 throw new VehicleInvalidException("Model year is invalid in the vehicle serial number.");
@@ -56,21 +57,13 @@ namespace McpSeriesGenerator.App.Domain.Entities
 
         public void SetVehicleType()
         {
-            if (VehicleSerialNumber == null ||
-                string.IsNullOrWhiteSpace(VehicleSerialNumber.GetValueWithoutCheckDigit()))
-            {
-                throw new VehicleInvalidException("Vehicle serial number is invalid or empty.");
-            }
+            ValidateSerialNumberNullOrEmpty();
             VehicleType = VehicleSerialNumber.GetValueWithoutCheckDigit().Substring(9, 1);
         }
 
         public void SetCountryOfManufacture()
         {
-            if (VehicleSerialNumber == null ||
-                string.IsNullOrWhiteSpace(VehicleSerialNumber.GetValueWithoutCheckDigit()))
-            {
-                throw new VehicleInvalidException("Vehicle serial number is invalid or empty.");
-            }
+            ValidateSerialNumberNullOrEmpty();
             AcronymCountryOfManufacture = VehicleSerialNumber.GetValueWithoutCheckDigit().Substring(4, 3);
         }
 
