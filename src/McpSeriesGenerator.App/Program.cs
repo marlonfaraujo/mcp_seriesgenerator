@@ -1,9 +1,11 @@
 ﻿using McpSeriesGenerator.App.Application.Abstractions;
 using McpSeriesGenerator.App.Application.UseCases;
 using McpSeriesGenerator.App.Infra.Data;
+using McpSeriesGenerator.App.McpServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ModelContextProtocol.Server;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((context, config) =>
@@ -23,6 +25,13 @@ var host = Host.CreateDefaultBuilder(args)
         services.AddScoped<CalculateTotalByCountrySorted>();
         services.AddScoped<GetCountryItems>();
 
+        services.AddMcpServer()
+            .WithStdioServerTransport()
+            .WithTools<VehicleTool>();
+        //.WithToolsFromAssembly();
+
+        services.AddScoped<VehicleTool>();
+        services.AddScoped<McpServerTool, UploadVehicleTool>();
     });
 
 try
