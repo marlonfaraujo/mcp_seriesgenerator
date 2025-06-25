@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36109.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7C680D4C-9C05-4A7E-8A68-3FA6EB015094}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpSeriesGenerator.Unit", "test\McpSeriesGenerator.Unit\McpSeriesGenerator.Unit.csproj", "{37C7C61E-57F6-414A-8259-AA6826E98EE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpSeriesGenerator.App", "src\McpSeriesGenerator.App\McpSeriesGenerator.App.csproj", "{12321CDC-4085-4722-9516-9FC9C32F0741}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpSeriesGenerator.Integration", "test\McpSeriesGenerator.Integration\McpSeriesGenerator.Integration.csproj", "{A7DF3DE1-8355-43BF-ACD3-C8ED4F6CF689}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "artifacts", "artifacts", "{03DEFF90-0EB7-4DED-BFAB-2C5A8DF95C7C}"
+	ProjectSection(SolutionItems) = preProject
+		artifacts\Countries.txt = artifacts\Countries.txt
+		artifacts\Series for Reporting.txt = artifacts\Series for Reporting.txt
+		artifacts\Series for validate.txt = artifacts\Series for validate.txt
+		artifacts\Series without check digit.txt = artifacts\Series without check digit.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37C7C61E-57F6-414A-8259-AA6826E98EE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37C7C61E-57F6-414A-8259-AA6826E98EE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37C7C61E-57F6-414A-8259-AA6826E98EE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37C7C61E-57F6-414A-8259-AA6826E98EE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12321CDC-4085-4722-9516-9FC9C32F0741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12321CDC-4085-4722-9516-9FC9C32F0741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12321CDC-4085-4722-9516-9FC9C32F0741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12321CDC-4085-4722-9516-9FC9C32F0741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7DF3DE1-8355-43BF-ACD3-C8ED4F6CF689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7DF3DE1-8355-43BF-ACD3-C8ED4F6CF689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7DF3DE1-8355-43BF-ACD3-C8ED4F6CF689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7DF3DE1-8355-43BF-ACD3-C8ED4F6CF689}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{37C7C61E-57F6-414A-8259-AA6826E98EE3} = {7C680D4C-9C05-4A7E-8A68-3FA6EB015094}
+		{12321CDC-4085-4722-9516-9FC9C32F0741} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{A7DF3DE1-8355-43BF-ACD3-C8ED4F6CF689} = {7C680D4C-9C05-4A7E-8A68-3FA6EB015094}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {238AF1C6-E2FD-45ED-8F3E-19EE06408795}
+	EndGlobalSection
+EndGlobal
