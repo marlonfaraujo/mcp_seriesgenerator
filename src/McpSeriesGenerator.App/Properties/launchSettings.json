@@ -2,6 +2,9 @@
   "profiles": {
     "McpSeriesGenerator.App": {
       "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
     }
   }
 }

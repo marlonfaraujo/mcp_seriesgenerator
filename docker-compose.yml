@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  mcp-seriesgenerator-app:
+    container_name: mcp_seriesgenerator_app
+    build:
+      context: .
+      dockerfile: src/McpSeriesGenerator.App/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
