@@ -19,9 +19,9 @@ docker-compose up -d
 powershell -ExecutionPolicy ByPass -File docker.ps1
 ```
 
-#### Claude desktop app configuration:
+#### Running with Claude desktop app:
 
-1. Open Claude desktop
+1. Open Claude desktop app for configuration
 
 2. Menu - File - Settings - Developer - Edit Config
 
