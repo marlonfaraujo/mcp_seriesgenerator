@@ -1,7 +1,8 @@
 #Invoke app in container
 Write-Host "Running project in container ..."
-Write-Host "`nPress Ctrl + C to next step...`n"
-docker exec -it mcp_seriesgenerator_app dotnet McpSeriesGenerator.App.dll
+Write-Host "`nWait for the next step...`n"
+Start-Sleep -s 5
+docker exec -it mcp_seriesgenerator_app bash -c "dotnet McpSeriesGenerator.App.dll &"
 
 #List files for copy
 Write-Host "`nList files in /artifacts/ from container ..."

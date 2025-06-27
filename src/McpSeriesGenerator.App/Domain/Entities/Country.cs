@@ -6,8 +6,15 @@ namespace McpSeriesGenerator.App.Domain.Entities
     {
         public string Acronym { get; private set; }
         public string Name { get; private set; }
+
+        public Country(string name)
+        {
+            Name = name;
+        }
+
         public Country(string acronym, string name = "")
         {
+            SetAcronym(acronym);
             Name = name;
         }
 
@@ -30,8 +37,13 @@ namespace McpSeriesGenerator.App.Domain.Entities
             {
                 throw new CountryInvalidException("Invalid input csv data.");
             }   
-            var country = new Country(csvText.Split(separator).First(), csvText.Split(separator).Last());
-            country.SetAcronym(csvText.Split(separator).First());
+            return Create(csvText.Split(separator).First(), csvText.Split(separator).Last());
+        }
+
+        public static Country Create(string acronym, string name)
+        {
+            var country = new Country(name);
+            country.SetAcronym(acronym);
             return country;
         }
     }

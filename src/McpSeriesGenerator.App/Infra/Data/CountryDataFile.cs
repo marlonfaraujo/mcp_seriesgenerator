@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using McpSeriesGenerator.App.Application.Abstractions;
 using McpSeriesGenerator.App.Domain.Entities;
-using McpSeriesGenerator.App.Dtos;
+using McpSeriesGenerator.App.Shared.Dtos;
 
 namespace McpSeriesGenerator.App.Infra.Data
 {

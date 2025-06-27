@@ -1,5 +1,6 @@
 ﻿using McpSeriesGenerator.App.Domain.Entities;
 using McpSeriesGenerator.App.Dtos;
+using McpSeriesGenerator.App.Shared.Dtos;
 using Microsoft.Extensions.Configuration;
 using ModelContextProtocol.Server;
 using System.ComponentModel;

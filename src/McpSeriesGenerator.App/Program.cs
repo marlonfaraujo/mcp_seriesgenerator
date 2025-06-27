@@ -57,10 +57,12 @@ try
     }
     async Task calculateTotalByCountrySortedUseCase()
     {
+        var getCountryItems = app.Services.GetRequiredService<GetCountryItems>();
+        var countries = await getCountryItems.ExecuteAsync(CancellationToken.None);
         var getSerialNumberForReport = app.Services.GetRequiredService<GetSerialNumberForReport>();
         var vehicles = await getSerialNumberForReport.ExecuteAsync(CancellationToken.None);
         var calculateTotalByCountrySorted = app.Services.GetRequiredService<CalculateTotalByCountrySorted>();
-        await calculateTotalByCountrySorted.ExecuteAsync(vehicles, CancellationToken.None);
+        await calculateTotalByCountrySorted.ExecuteAsync(vehicles, countries, CancellationToken.None);
     }
 
     await app.RunAsync();

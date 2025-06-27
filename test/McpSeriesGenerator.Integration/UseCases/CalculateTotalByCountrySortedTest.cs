@@ -24,12 +24,8 @@ namespace McpSeriesGenerator.Integration.UseCases
             var countries = await new GetCountryItems(countryData).ExecuteAsync(CancellationToken.None);
             var vehicleData = new VehicleDataFile(_configuration);
             var vehicles = await new GetSerialNumberForReport(vehicleData).ExecuteAsync(CancellationToken.None);
-            var useCase = new CalculateTotalByCountrySorted(
-                vehicleData,
-                new GetCountryItems(countryData)
-            );
-
-            await useCase.ExecuteAsync(vehicles, CancellationToken.None);
+            var useCase = new CalculateTotalByCountrySorted(vehicleData);
+            await useCase.ExecuteAsync(vehicles, countries, CancellationToken.None);
             var outputPath = Path.Combine(_fixture.ArtifactsPath, "Total by Country.txt");
             Assert.True(File.Exists(outputPath));
             var lines = await File.ReadAllLinesAsync(outputPath);

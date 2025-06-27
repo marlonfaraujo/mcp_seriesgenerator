@@ -7,24 +7,23 @@ namespace McpSeriesGenerator.App.Application.UseCases
     public class CalculateTotalByCountrySorted
     {
         private readonly IVehicleData _vehicleData;
-        private readonly GetCountryItems _getCountryItems;
 
-        public CalculateTotalByCountrySorted(IVehicleData vehicleData, GetCountryItems getCountryItems)
+        public CalculateTotalByCountrySorted(IVehicleData vehicleData)
         {
             this._vehicleData = vehicleData;
-            this._getCountryItems = getCountryItems;
         }
 
-        public async Task ExecuteAsync(IEnumerable<VehicleDto> items, CancellationToken cancellationToken = default)
+        public async Task ExecuteAsync(IEnumerable<VehicleDto> vehicleItems, IEnumerable<CountryDto> countryItems, CancellationToken cancellationToken = default)
         {
-            var countries = await this._getCountryItems.ExecuteAsync(cancellationToken);
             var vehicles = new List<Vehicle>();
-            foreach (var vehicle in items)
+            foreach (var vehicle in vehicleItems)
             {
                 var newVehicle = Vehicle.Create(vehicle.SerialNumber);
                 vehicles.Add(newVehicle);
             }
-            await this._vehicleData.SaveTotalAsync(vehicles, countries, cancellationToken);
+            await this._vehicleData.SaveTotalAsync(vehicles, 
+                countryItems.Select(country => Country.Create(country.Acronym, country.Name)), 
+                cancellationToken);
         }
     }
 }

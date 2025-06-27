@@ -1,5 +1,5 @@
 ﻿using McpSeriesGenerator.App.Application.Abstractions;
-using McpSeriesGenerator.App.Domain.Entities;
+using McpSeriesGenerator.App.Application.Dtos;
 
 namespace McpSeriesGenerator.App.Application.UseCases
 {
@@ -13,10 +13,10 @@ namespace McpSeriesGenerator.App.Application.UseCases
             this._contryData = contryData;
         }
 
-        public async Task<IEnumerable<Country>> ExecuteAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<CountryDto>> ExecuteAsync(CancellationToken cancellationToken = default)
         {
             var countries = await this._contryData.GetAsync(cancellationToken);
-            return countries;
+            return countries.Select(country => new CountryDto(country.Acronym, country.Name));
         }
     }
 }
