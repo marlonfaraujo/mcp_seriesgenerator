@@ -1,7 +1,13 @@
-﻿namespace McpSeriesGenerator.Integration
+﻿using McpSeriesGenerator.App.Shared.Abstractions;
+using McpSeriesGenerator.App.Shared.Dtos;
+using Microsoft.Extensions.Configuration;
+
+namespace McpSeriesGenerator.Integration
 {
     public class ArtifactsFixture
     {
+        private readonly IConfiguration _configuration;
+        public readonly IArtifactConfig _artifactConfig;
         public string ArtifactsPath { get; }
 
         public ArtifactsFixture()
@@ -10,6 +16,12 @@
 
             if (!Directory.Exists(ArtifactsPath))
                 throw new DirectoryNotFoundException($"'artifacts' folder not found: {ArtifactsPath}");
+
+            _configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            _artifactConfig = _configuration.GetSection("Artifact").Get<ArtifactConfig>();
         }
 
         public string GetFile(string filename)

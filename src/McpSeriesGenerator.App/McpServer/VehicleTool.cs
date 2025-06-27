@@ -1,7 +1,6 @@
 ﻿using McpSeriesGenerator.App.Domain.Entities;
 using McpSeriesGenerator.App.Dtos;
-using McpSeriesGenerator.App.Shared.Dtos;
-using Microsoft.Extensions.Configuration;
+using McpSeriesGenerator.App.Shared.Abstractions;
 using ModelContextProtocol.Server;
 using System.ComponentModel;
 
@@ -10,15 +9,12 @@ namespace McpSeriesGenerator.App.McpServer
     [McpServerToolType]
     public class VehicleTool
     {
-        private const string artifactKey = "Artifact";
-        private readonly IConfiguration _configuration;
-        private readonly ArtifactConfig _artifactConfig;
+        private readonly IArtifactConfig _artifactConfig;
         private readonly string _basePath;
 
-        public VehicleTool(IConfiguration configuration)
+        public VehicleTool(IArtifactConfig artifactConfig)
         {
-            this._configuration = configuration;
-            this._artifactConfig = this._configuration.GetSection(artifactKey).Get<ArtifactConfig>();
+            this._artifactConfig = artifactConfig;
             this._basePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, this._artifactConfig.BasePath));
         }
 

@@ -2,9 +2,12 @@
 using McpSeriesGenerator.App.Application.UseCases;
 using McpSeriesGenerator.App.Infra.Data;
 using McpSeriesGenerator.App.McpServer;
+using McpSeriesGenerator.App.Shared.Abstractions;
+using McpSeriesGenerator.App.Shared.Dtos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using ModelContextProtocol.Server;
 
 var host = Host.CreateDefaultBuilder(args)
@@ -32,6 +35,12 @@ var host = Host.CreateDefaultBuilder(args)
 
         services.AddScoped<VehicleTool>();
         services.AddScoped<McpServerTool, UploadVehicleTool>();
+
+        services.Configure<ArtifactConfig>(
+            context.Configuration.GetSection("Artifact"));
+
+        services.AddSingleton<IArtifactConfig>(serviceProvider =>
+            serviceProvider.GetRequiredService<IOptions<ArtifactConfig>>().Value);
     });
 
 try

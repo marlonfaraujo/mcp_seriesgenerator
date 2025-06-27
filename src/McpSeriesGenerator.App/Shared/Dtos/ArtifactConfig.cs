@@ -1,6 +1,11 @@
-﻿namespace McpSeriesGenerator.App.Shared.Dtos
+﻿using McpSeriesGenerator.App.Shared.Abstractions;
+
+namespace McpSeriesGenerator.App.Shared.Dtos
 {
-    public record ArtifactConfig(string BasePath, Dictionary<string, string> Input, Dictionary<string, string> Output)
+    public class ArtifactConfig : IArtifactConfig
     {
+        public string BasePath { get; set; }
+        public Dictionary<string, string> Input { get; set; }
+        public Dictionary<string, string> Output { get; set; }
     }
 }
