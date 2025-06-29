@@ -23,8 +23,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Content Include="..\..\artifacts\*.*"
-            Exclude="..\..\artifacts\Series with Check Digit.txt;..\..\artifacts\Series Validated.txt;..\..\artifacts\Total by Country.txt">
+    <Content Include="..\..\artifacts\*.*" Exclude="..\..\artifacts\Series with Check Digit.txt;..\..\artifacts\Series Validated.txt;..\..\artifacts\Total by Country.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <Link>artifacts\%(Filename)%(Extension)</Link>
