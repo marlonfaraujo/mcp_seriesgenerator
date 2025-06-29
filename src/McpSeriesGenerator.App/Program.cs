@@ -7,45 +7,45 @@ using McpSeriesGenerator.App.Shared.Dtos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ModelContextProtocol.Server;
 
-var host = Host.CreateDefaultBuilder(args)
-    .ConfigureAppConfiguration((context, config) =>
+var builder = new HostApplicationBuilder(args);
+    builder.Configuration.SetBasePath(AppContext.BaseDirectory);
+    builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+    builder.Logging.ClearProviders();
+    builder.Logging.AddConsole(consoleLogOptions =>
     {
-        config.SetBasePath(AppContext.BaseDirectory);
-        config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-    })
-    .ConfigureServices((context, services) =>
-    {
-        services.AddScoped<IVehicleData, VehicleDataFile>();
-        services.AddScoped<ICountryData, CountryDataFile>();
-        services.AddScoped<GetSerialNumberWithoutCheckDigit>();
-        services.AddScoped<GenerateCheckDigit>();
-        services.AddScoped<GetSerialNumberToValidate>();
-        services.AddScoped<ValidateSerialNumber>();
-        services.AddScoped<GetSerialNumberForReport>();
-        services.AddScoped<CalculateTotalByCountrySorted>();
-        services.AddScoped<GetCountryItems>();
-
-        services.AddMcpServer()
-            .WithStdioServerTransport()
-            .WithTools<VehicleTool>();
-        //.WithToolsFromAssembly();
-
-        services.AddScoped<VehicleTool>();
-        services.AddScoped<McpServerTool, UploadVehicleTool>();
-
-        services.Configure<ArtifactConfig>(
-            context.Configuration.GetSection("Artifact"));
-
-        services.AddSingleton<IArtifactConfig>(serviceProvider =>
-            serviceProvider.GetRequiredService<IOptions<ArtifactConfig>>().Value);
+        // Configure all logs to go to stderr
+        consoleLogOptions.LogToStandardErrorThreshold = LogLevel.Trace;
     });
+
+    builder.Services.AddScoped<IVehicleData, VehicleDataFile>();
+    builder.Services.AddScoped<IVehicleData, VehicleDataFile>();
+    builder.Services.AddScoped<ICountryData, CountryDataFile>();
+    builder.Services.AddScoped<GetSerialNumberWithoutCheckDigit>();
+    builder.Services.AddScoped<GenerateCheckDigit>();
+    builder.Services.AddScoped<GetSerialNumberToValidate>();
+    builder.Services.AddScoped<ValidateSerialNumber>();
+    builder.Services.AddScoped<GetSerialNumberForReport>();
+    builder.Services.AddScoped<CalculateTotalByCountrySorted>();
+    builder.Services.AddScoped<GetCountryItems>();
+    builder.Services.AddMcpServer()
+        .WithStdioServerTransport()
+        .WithTools<VehicleTool>();
+    //.WithToolsFromAssembly();
+    builder.Services.AddScoped<VehicleTool>();
+    builder.Services.AddScoped<McpServerTool, UploadVehicleTool>();
+    builder.Services.Configure<ArtifactConfig>(
+        builder.Configuration.GetSection("Artifact"));
+    builder.Services.AddSingleton<IArtifactConfig>(serviceProvider =>
+        serviceProvider.GetRequiredService<IOptions<ArtifactConfig>>().Value);
 
 try
 {
-    var app = host.Build();
+    var app = builder.Build();
     await generateCheckDigitUseCase();
     await validateSerialNumberUseCase();
     await calculateTotalByCountrySortedUseCase();

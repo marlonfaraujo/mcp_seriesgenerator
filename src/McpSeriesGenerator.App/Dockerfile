@@ -27,7 +27,9 @@ FROM base AS final
 USER root 
 WORKDIR /app
 COPY --from=publish /app/publish .
-RUN dotnet McpSeriesGenerator.App.dll
+RUN dotnet McpSeriesGenerator.App.dll &
+
+ENV DOTNET_EnableDiagnostics=0
 #ENTRYPOINT ["dotnet", "McpSeriesGenerator.App.dll"]
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
