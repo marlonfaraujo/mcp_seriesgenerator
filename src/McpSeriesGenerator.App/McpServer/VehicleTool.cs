@@ -106,8 +106,7 @@ namespace McpSeriesGenerator.App.McpServer
 
         [McpServerTool(Name = "ReturnsIfTheSerialNumberIsValid"), Description("Validate serial number with check digit.")]
         public string ReturnsIfTheSerialNumberIsValid(
-            [Description("Enter a serial number with check digit")] string SerialNumber, 
-            CancellationToken cancellationToken = default)
+            [Description("Enter a serial number with check digit")] string SerialNumber)
         {
             if (string.IsNullOrWhiteSpace(SerialNumber))
             {
