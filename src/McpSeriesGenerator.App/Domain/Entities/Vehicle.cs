@@ -8,8 +8,8 @@ namespace McpSeriesGenerator.App.Domain.Entities
         public SerialNumber VehicleSerialNumber { get; private set; }
         public int YearOfManufacture { get; private set; }
         public int ModelYear { get; private set; }
-        public string VehicleType { get; private set; }
-        public string AcronymCountryOfManufacture { get; private set; }
+        public string VehicleType { get; private set; } = string.Empty;
+        public string AcronymCountryOfManufacture { get; private set; } = string.Empty;
 
         public Vehicle(string serialNumber)
         {

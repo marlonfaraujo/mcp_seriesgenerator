@@ -4,8 +4,8 @@ namespace McpSeriesGenerator.App.Domain.Entities
 {
     public class Country
     {
-        public string Acronym { get; private set; }
-        public string Name { get; private set; }
+        public string Acronym { get; private set; } = string.Empty;
+        public string Name { get; private set; } = string.Empty;
 
         public Country(string name)
         {

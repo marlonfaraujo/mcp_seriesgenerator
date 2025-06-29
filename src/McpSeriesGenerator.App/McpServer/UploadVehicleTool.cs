@@ -33,9 +33,21 @@ namespace McpSeriesGenerator.App.McpServer
 
         public override async ValueTask<CallToolResult> InvokeAsync(RequestContext<CallToolRequestParams> request, CancellationToken cancellationToken = default)
         {
-            try { 
+            try
+            {
                 var @params = request.Params;
-                var arguments = request.Params.Arguments;
+                var arguments = @params?.Arguments;
+
+                if (arguments == null)
+                {
+                    var message = JsonSerializer.Serialize(new { error = "Arguments are null.", message = @params });
+                    return new CallToolResult
+                    {
+                        IsError = true,
+                        Content = [new TextContentBlock { Text = message }]
+                    };
+                }
+
                 var fileName = arguments.GetValueOrDefault("fileName").ToString();
                 var file = arguments.GetValueOrDefault("file").ToString();
 

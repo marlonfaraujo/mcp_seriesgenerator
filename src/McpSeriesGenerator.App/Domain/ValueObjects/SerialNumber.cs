@@ -5,8 +5,8 @@ namespace McpSeriesGenerator.App.Domain.ValueObjects
 {
     public class SerialNumber
     {
-        private string CheckDigit { get; set; }
-        private string Value { get; set; }
+        private string CheckDigit { get; set; } = string.Empty;
+        private string Value { get; set; } = string.Empty;
 
         public SerialNumber(string value) 
         {
@@ -28,7 +28,7 @@ namespace McpSeriesGenerator.App.Domain.ValueObjects
             {
                 return new SerialNumber(value);
             }
-            var serialNumber = new SerialNumber(value, value.Split(separator).LastOrDefault());
+            var serialNumber = new SerialNumber(value, value.Split(separator).LastOrDefault() ?? string.Empty);
             return serialNumber;
         }
 
@@ -48,7 +48,7 @@ namespace McpSeriesGenerator.App.Domain.ValueObjects
                 Value = value;
                 return;
             }
-            Value = value.Split(separator).FirstOrDefault();
+            Value = value.Split(separator).FirstOrDefault() ?? string.Empty;
         }
 
         public void SetCheckDigit()

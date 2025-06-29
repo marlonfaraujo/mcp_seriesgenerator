@@ -73,15 +73,18 @@ namespace McpSeriesGenerator.App.Infra.Data
             const string key = "totalByCountry";
             string filePath = Path.Combine(this._basePath, this._artifactConfig.Output[key]);
             var totals = vehicles
-                .GroupBy(g => g.AcronymCountryOfManufacture)           
-                .Select(vehicle => new CountryTotalDto(countries.FirstOrDefault(country => 
-                    country.Acronym.Equals(vehicle.First().AcronymCountryOfManufacture)).Name, 
-                    vehicle.Count()))
+                .GroupBy(g => g.AcronymCountryOfManufacture)
+                .Where(vehicle => countries.Any(country => country.Acronym.Equals(vehicle.First().AcronymCountryOfManufacture)))
+                .Select(vehicle =>
+                {
+                    var country = countries.FirstOrDefault(country => country.Acronym.Equals(vehicle.First().AcronymCountryOfManufacture));
+                    return new CountryTotalDto(country!.Name, vehicle.Count());
+                })
                 .ToList();
             var dict = totals
                 .OrderBy(o => o.Name)
                 .ToDictionary(item => item.Name, item => item.Total);
-            await File.WriteAllLinesAsync(filePath, 
+            await File.WriteAllLinesAsync(filePath,
                 dict.Select(x => $"{x.Key}-{x.Value}"), cancellationToken);
         }
 
