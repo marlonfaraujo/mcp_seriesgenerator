@@ -1,9 +1,9 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace McpSeriesGenerator.Integration.McpServer
 {
+    [Collection("WithoutParallelism")]
     public class VehicleToolTest : IClassFixture<ProcessFixture>
     {
         private readonly ProcessFixture _fixture;
@@ -35,9 +35,7 @@ namespace McpSeriesGenerator.Integration.McpServer
                     arguments = new { request = new { vehicleType = "C" } }
                 }
             });
-            var jsonBytes = Encoding.UTF8.GetBytes(jsonString);
-            var message = $"Content-Length: {jsonBytes.Length}\r\n\r\n{jsonString}";
-            await _fixture._process.StandardInput.WriteLineAsync(message);
+            await _fixture._process.StandardInput.WriteLineAsync(jsonString);
             await _fixture._process.StandardInput.FlushAsync();
             if (_fixture._process.StandardOutput.Peek() > 0)
             {
@@ -75,9 +73,7 @@ namespace McpSeriesGenerator.Integration.McpServer
                     arguments = new { }
                 }
             });
-            var jsonBytes = Encoding.UTF8.GetBytes(jsonString);
-            var message = $"Content-Length: {jsonBytes.Length}\r\n\r\n{jsonString}";
-            await _fixture._process.StandardInput.WriteLineAsync(message);
+            await _fixture._process.StandardInput.WriteLineAsync(jsonString);
             await _fixture._process.StandardInput.FlushAsync();
             if (_fixture._process.StandardOutput.Peek() > 0)
             {
@@ -115,9 +111,7 @@ namespace McpSeriesGenerator.Integration.McpServer
                     arguments = new { }
                 }
             });
-            var jsonBytes = Encoding.UTF8.GetBytes(jsonString);
-            var message = $"Content-Length: {jsonBytes.Length}\r\n\r\n{jsonString}";
-            await _fixture._process.StandardInput.WriteLineAsync(message);
+            await _fixture._process.StandardInput.WriteLineAsync(jsonString);
             await _fixture._process.StandardInput.FlushAsync();
             if (_fixture._process.StandardOutput.Peek() > 0)
             {
@@ -155,9 +149,7 @@ namespace McpSeriesGenerator.Integration.McpServer
                     arguments = new { SerialNumber = "0202ARGXXC2614-E" }
                 }
             });
-            var jsonBytes = Encoding.UTF8.GetBytes(jsonString);
-            var message = $"Content-Length: {jsonBytes.Length}\r\n\r\n{jsonString}";
-            await _fixture._process.StandardInput.WriteLineAsync(message);
+            await _fixture._process.StandardInput.WriteLineAsync(jsonString);
             await _fixture._process.StandardInput.FlushAsync();
             if (_fixture._process.StandardOutput.Peek() > 0)
             {

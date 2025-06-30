@@ -8,14 +8,13 @@ namespace McpSeriesGenerator.Integration.McpServer
 
         public ProcessFixture()
         {
-            string projectDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\..\src\McpSeriesGenerator.App"));
-            string csproj = Path.Combine(projectDir, "McpSeriesGenerator.App.csproj");
+            string appDll = Path.Combine(AppContext.BaseDirectory, "McpSeriesGenerator.App.dll");
             _process = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "dotnet",
-                    Arguments = $"run --no-launch-profile --project \"{csproj}\" --no-build",
+                    Arguments = $"\"{appDll}\"",
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,

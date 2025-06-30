@@ -1,9 +1,9 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace McpSeriesGenerator.Integration.McpServer
 {
+    [Collection("WithoutParallelism")]
     public class UploadVehicleToolTest : IClassFixture<ProcessFixture>
     {
         private readonly ProcessFixture _fixture;
@@ -40,9 +40,7 @@ namespace McpSeriesGenerator.Integration.McpServer
                     }
                 }
             });
-            var jsonBytes = Encoding.UTF8.GetBytes(jsonString);
-            var message = $"Content-Length: {jsonBytes.Length}\r\n\r\n{jsonString}";
-            await _fixture._process.StandardInput.WriteLineAsync(message);
+            await _fixture._process.StandardInput.WriteLineAsync(jsonString);
             await _fixture._process.StandardInput.FlushAsync();
             if (_fixture._process.StandardOutput.Peek() > 0)
             {

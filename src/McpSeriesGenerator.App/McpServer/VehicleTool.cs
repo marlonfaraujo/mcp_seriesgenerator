@@ -24,12 +24,12 @@ namespace McpSeriesGenerator.App.McpServer
             CancellationToken cancellationToken = default)
         {
             var outputPath = GetFilePath(this._artifactConfig.Output["seriesWithCheckDigit"]);
-            var vehicles = new List<Vehicle>();
-
-            await foreach (var item in File.ReadLinesAsync(outputPath, cancellationToken))
-            {
-                vehicles.Add(Vehicle.Create(item));
-            }
+            var vehicles = await ReadLinesAsObjectsAsync<Vehicle>(
+                originalPath: outputPath,
+                parser: line =>
+                {
+                    return Vehicle.Create(line);
+                },cancellationToken: cancellationToken);
 
             if (request != null)
             {
@@ -86,7 +86,7 @@ namespace McpSeriesGenerator.App.McpServer
         public async Task<string> GetVehiclesWithValidatedSerialNumberAndCheckDigit(CancellationToken cancellationToken = default)
         {
             var outputPath = GetFilePath(this._artifactConfig.Output["seriesValidated"]);
-            var lines = await File.ReadAllLinesAsync(outputPath, cancellationToken);
+            var lines = await ReadLinesAsync(outputPath, cancellationToken);
             return string.Join("\n--\n", lines.Select(x =>
             {
                 return x;
@@ -97,7 +97,7 @@ namespace McpSeriesGenerator.App.McpServer
         public async Task<string> GetTotalVehiclesByCountry(CancellationToken cancellationToken = default)
         {
             var outputPath = GetFilePath(this._artifactConfig.Output["totalByCountry"]);
-            var lines = await File.ReadAllLinesAsync(outputPath, cancellationToken);
+            var lines = await ReadLinesAsync(outputPath, cancellationToken);
             return string.Join("\n--\n", lines.Select(x =>
             {
                 return x;
@@ -134,6 +134,64 @@ namespace McpSeriesGenerator.App.McpServer
                     throw new FileNotFoundException($"File not found: {fullPath}");
                 return fullPath;
             }
+        }
+
+        private async Task<IEnumerable<T>> ReadLinesAsObjectsAsync<T>(string originalPath, Func<string, T> parser, CancellationToken cancellationToken = default)
+        {
+            var result = new List<T>();
+            var lines = await ReadLinesAsync(originalPath, cancellationToken);
+            foreach (var line in lines)
+            {
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    result.Add(parser(line));
+                }
+            }
+
+            return result;
+        }
+
+        private async Task<IEnumerable<string>> ReadLinesAsync(string originalPath, CancellationToken cancellationToken = default)
+        {
+            if (!File.Exists(originalPath))
+                throw new FileNotFoundException($"File not found: {originalPath}");
+
+            string tempPath = Path.Combine(AppContext.BaseDirectory, "temp_upload");
+            string tempFilePath = Path.Combine(tempPath, $"{Guid.NewGuid()}.tmp");
+            Directory.CreateDirectory(tempPath);
+            File.Copy(originalPath, tempFilePath, overwrite: true);
+
+            var lines = new List<string>();
+            try
+            {
+                using var stream = new FileStream(
+                    tempFilePath,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.ReadWrite);
+
+                using var reader = new StreamReader(stream);
+
+                string? line;
+                while ((line = await reader.ReadLineAsync()) != null)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        lines.Add(line);
+                    }
+                }
+            }
+            finally
+            {
+                if (File.Exists(tempFilePath))
+                {
+                    File.Delete(tempFilePath);
+                }
+            }
+
+            return lines;
         }
     }
 }
