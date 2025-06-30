@@ -1,7 +1,7 @@
 ﻿using McpSeriesGenerator.App.Domain.Entities;
+using McpSeriesGenerator.App.Infra.Data;
 using ModelContextProtocol.Protocol;
 using ModelContextProtocol.Server;
-using System.Text;
 using System.Text.Json;
 
 namespace McpSeriesGenerator.App.McpServer
@@ -47,10 +47,8 @@ namespace McpSeriesGenerator.App.McpServer
                         Content = [new TextContentBlock { Text = message }]
                     };
                 }
-
                 var fileName = arguments.GetValueOrDefault("fileName").ToString();
                 var file = arguments.GetValueOrDefault("file").ToString();
-
                 if (string.IsNullOrWhiteSpace(fileName))
                 {
                     var message = JsonSerializer.Serialize(new { error = "Not found file name.", message = @params });
@@ -91,7 +89,6 @@ namespace McpSeriesGenerator.App.McpServer
                         IsError = false,
                         Content = [new TextContentBlock { Text = message }]
                     };
-                    
                 }
 
             }
@@ -110,60 +107,17 @@ namespace McpSeriesGenerator.App.McpServer
         {
             var vehicles = new List<Vehicle>();
             string filePath = Path.Combine(AppContext.BaseDirectory, "artifacts", fileName);
-
-            if (!FileValidate())
+            if (!FileService.FileValidate(fileContent, fileName, ".txt"))
             {
                 throw new InvalidOperationException("Invalid file format.");
             }
-
             var lines = fileContent.Split('\n', StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {
                 vehicles.Add(Vehicle.Create(line));
             }
-            await File.WriteAllLinesAsync(filePath,
-                vehicles.Select(x => x.VehicleSerialNumber.GetValueWithCheckDigit()),
-                cancellationToken);
-
+            await FileService.WriteAllLinesAsync(filePath, lines, cancellationToken);
             return vehicles;
-
-            bool FileValidate()
-            {
-                var extension = Path.GetExtension(fileName);
-                if (!extension.Equals(".txt", StringComparison.OrdinalIgnoreCase)) return false;
-                string tempPath = Path.Combine(AppContext.BaseDirectory, "temp_upload");
-                string tempFile = Path.Combine(tempPath, $"{Guid.NewGuid()}{extension}");
-                Directory.CreateDirectory(tempPath);
-                try
-                {
-                    using (FileStream fileStream = new(tempFile, FileMode.Create, FileAccess.ReadWrite))
-                    {
-                        using (StreamWriter writer = new(fileStream, Encoding.UTF8, leaveOpen: true))
-                        {
-                            writer.Write(fileContent);
-                            writer.Flush();
-                        }
-                        fileStream.Seek(0, SeekOrigin.Begin);
-                        using (StreamReader reader = new StreamReader(fileStream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true, leaveOpen: false))
-                        {
-                            var lineFirst = reader.ReadLine();
-                            return true;
-                        }
-                    }
-                }
-                catch(Exception ex)
-                {
-                    File.WriteAllText(Path.Combine(tempPath, $"{Guid.NewGuid()}{extension}"), ex.Message, Encoding.UTF8);
-                    return false;
-                }
-                finally
-                {
-                    if (File.Exists(tempFile))
-                    {
-                        File.Delete(tempFile);
-                    }
-                }
-            }
         }
     }
 }
